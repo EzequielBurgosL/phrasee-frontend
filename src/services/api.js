@@ -1,26 +1,22 @@
-const db = {
-  users: {
-    'test.user@phrasee.co': 'testPassword1'
-  }
-}
+import axios from 'axios';
+import { STATUS_CODES } from '../utils/constants';
 
-export const getUserFromDb = async (user) => {
-  const { username = '', password = '' } = user;
-  let result;
+const USER_ENDPOINT = 'https://run.mocky.io/v3/3669c83a-9ba1-4424-b08f-a8ef6d699966';
 
-  if (db.users[username] && db.users[username] === password) {
-    result = {
-      status: 200,
-      message: 'login successful',
-      body: user
+export const getUser = async (payload) => {
+  const response = await axios.post(USER_ENDPOINT, payload);
+
+  if (response.status === STATUS_CODES.SUCCESSFUL) {
+    return {
+      data: response.data,
+      message: response.statusText,
+      status: response.status
     };
-  } else {
-    result = {
-      status: 401,
+  } else if (response.status === STATUS_CODES.UNSUCCESSFUL) {
+    return {
+      data: response.data,
       message: 'user email or password is incorrect',
-      body: {}
+      status: response.status
     };
   }
-
-  return result;
 };

@@ -15,8 +15,8 @@ const Login = () => {
     resolver: yupResolver(formSchema)
   });
 
-  const onFinish = async (formData) => {
-    const result = await auth.login(formData, () => history.push('/home'));
+  const onFinish = async (payload) => {
+    const result = await auth.login(payload, () => history.push('/home'));
 
     if (result.status === STATUS_CODES.UNSUCCESSFUL) {
       setLoginError({ message: result.message });

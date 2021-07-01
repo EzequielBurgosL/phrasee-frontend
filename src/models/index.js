@@ -21,8 +21,8 @@ export const form = {
 export const formSchema = yup.object().shape({
   username: yup.string()
     .required()
-    .matches(REGEX.EMAIL, 'username must be an email address only')
-    .matches(/(?<=@)(.*){0,5}(?=.)/, 'more than 5 characters'),
+    // .matches(/(?<=@)(.*){0,5}(?=.)/, 'more than 5 characters')
+    .matches(REGEX.EMAIL, 'username must be an email address only'),
   password: yup.string()
     .required()
     .matches(REGEX.ALPHANUMERIC, 'password must be alphanumeric only')
