@@ -5,23 +5,16 @@ import { useHistory } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { form, formSchema } from '../models';
-import { STATUS_CODES } from '../utils/constants';
-import { validateUser } from '../api';
+import auth from '../services/auth';
 
 const Login = () => {
-  let history = useHistory();
+  const history = useHistory();
   const { register, formState: { errors }, handleSubmit } = useForm({
     resolver: yupResolver(formSchema)
   });
 
-  const onFinish = async data => {
-    const result = await validateUser(data);
-    console.log('result: ', result);
-
-    if (result.status === STATUS_CODES.SUCCESSFUL) {
-      console.log('history: ', history);
-      history.push('/home')
-    }
+  const onFinish = (formData) => {
+    auth.login(formData, () => history.push('/home'));
   };
 
   const onFinishFailed = errorInfo => {

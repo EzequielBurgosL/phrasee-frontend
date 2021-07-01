@@ -4,7 +4,7 @@ const db = {
   }
 }
 
-export const validateUser = async (user) => {
+export const getUserFromDb = async (user) => {
   const { username = '', password = '' } = user;
   let result;
 

@@ -6,6 +6,7 @@ import { Route, Switch } from 'react-router-dom';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import Layout from './components/Layout';
+import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import Login from './pages/Login';
 
@@ -14,16 +15,12 @@ const App = () => {
     <Layout>
       <Header />
       <Switch>
-        <Route exact path="/">
-          <Login />
-        </Route>
-        <Route path="/home">
-          <Home />
-        </Route>
+        <Route exact path='/' component={Login} />
+        <ProtectedRoute exact path='/home' component={Home} />
       </Switch>
       <Footer />
     </Layout>
   );
-}
+};
 
 export default App;
