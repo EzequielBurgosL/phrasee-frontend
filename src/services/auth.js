@@ -1,10 +1,10 @@
-import { getUser } from "./api";
-import { STATUS_CODES } from "../utils/constants";
+import { getUser } from './api';
+import { STATUS_CODES } from '../utils/constants';
 import {
   getLocalStorage,
   removeLocalStorage,
   setLocalStorage
-} from "./storage";
+} from './storage';
 
 class Auth {
   constructor() {
@@ -12,7 +12,7 @@ class Auth {
     this.authKey = 'auth_token';
   }
 
-  async login(payload, callback) {
+  async login(payload) {
     const result = await getUser(payload);
 
     if (result.status === STATUS_CODES.SUCCESSFUL) {
@@ -20,8 +20,6 @@ class Auth {
 
       setLocalStorage(this.authKey, token);
       this.authenticated = true; // move into redux
-
-      callback();
     }
 
     return result;
