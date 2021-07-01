@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
 import 'antd/dist/antd.css';
+
 import { Form, Input, Button, Checkbox } from 'antd';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import React, { useState } from 'react';
+
+import { form, formSchema } from './models';
+import { STATUS_CODES } from './utils/constants';
+import { validateUser } from './api';
 
 const layout = {
   labelCol: { span: 4 },
@@ -11,8 +18,16 @@ const tailLayout = {
 };
 
 const App = () => {
-  const onFinish = values => {
-    console.log('Success:', values);
+  const { register, formState: { errors }, handleSubmit } = useForm({
+    resolver: yupResolver(formSchema)
+  });
+  
+  const onFinish = async data => {
+    const result = await validateUser(data);
+    
+    if (result.status === STATUS_CODES.SUCCESSFUL) {
+
+    }
   };
 
   const onFinishFailed = errorInfo => {
@@ -22,44 +37,43 @@ const App = () => {
   return (
     <>
       <header>
-        <img src="./images/dhg_whole.png" />
+        <img src='./images/dhg_whole.png' />
       </header>
       <main>
         <Form
           layout={'vertical'}
-          name="basic"
+          name='basic'
           initialValues={{ remember: true }}
-          onFinish={onFinish}
+          onFinish={handleSubmit(onFinish)}
           onFinishFailed={onFinishFailed}
         >
+          {form.inputs.map((input, key) => {
+            return (
+              <Form.Item
+                key={key}
+                label={input.label}
+                name={input.name}
+              >
+                {input.name === 'password' ?
+                  <Input.Password size={input.size} {...register(input.name)} /> :
+                  <Input size={input.size} {...register(input.name)} />}
+                <p style={{ color: 'red' }}>{errors[input.name]?.message}</p>
+              </Form.Item>
+            )
+          })}
           <Form.Item
-            label="Username"
-            name="username"
+            name='remember'
+            valuePropName='checked'
           >
-            <Input
-              size="large"
-            />
-          </Form.Item>
-
-          <Form.Item
-            label="Password"
-            name="password"
-          >
-            <Input.Password
-              size="large"
-            />
-          </Form.Item>
-
-          <Form.Item name="remember" valuePropName="checked">
             <Checkbox>Remember me</Checkbox>
           </Form.Item>
 
           <Form.Item>
             <Button
-              type="primary"
-              htmlType="submit"
-              size="large"
-              disabled={1>0}
+              type='primary'
+              htmlType='submit'
+              size='large'
+            // disabled={1 > 0}
             >
               Log in
             </Button>
