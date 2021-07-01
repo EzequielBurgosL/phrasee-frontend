@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
@@ -6,15 +6,21 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { form, formSchema } from '../models';
 import auth from '../services/auth';
+import { STATUS_CODES } from '../utils/constants';
 
 const Login = () => {
+  const [loginError, setLoginError] = useState({ message: '' });
   const history = useHistory();
   const { register, formState: { errors }, handleSubmit } = useForm({
     resolver: yupResolver(formSchema)
   });
 
-  const onFinish = (formData) => {
-    auth.login(formData, () => history.push('/home'));
+  const onFinish = async (formData) => {
+    const result = await auth.login(formData, () => history.push('/home'));
+
+    if (result.status === STATUS_CODES.UNSUCCESSFUL) {
+      setLoginError({ message: result.message });
+    }
   };
 
   const onFinishFailed = errorInfo => {
@@ -61,6 +67,7 @@ const Login = () => {
             Log in
           </Button>
         </Form.Item>
+        {loginError.message && <p style={{ color: 'red' }}>{loginError.message}</p>}
       </Form>
     </main>
   );

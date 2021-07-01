@@ -11,9 +11,10 @@ class Auth {
 
     if (result.status === STATUS_CODES.SUCCESSFUL) {
       this.authenticated = true;
+      callback();
     }
 
-    callback();
+    return result;
   }
 
   logout(callback) {

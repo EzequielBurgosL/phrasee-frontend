@@ -17,7 +17,7 @@ export const getUserFromDb = async (user) => {
   } else {
     result = {
       status: 401,
-      message: 'user was not found',
+      message: 'user email or password is incorrect',
       body: {}
     };
   }
