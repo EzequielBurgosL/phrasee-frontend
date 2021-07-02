@@ -4,12 +4,15 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import auth from '../services/auth'
 import { hydrateUserData } from '../redux/User/actions';
-import { isoStringToDatetime, sort } from '../utils/helpers';
+import { isoStringToDatetime, sortArrayOfObjects } from '../utils/helpers';
 
 const processPatientsList = (patients = []) => {
   const filteredPatients = patients.filter(p => p.is_completed === false);
 
-  return sort(sort(filteredPatients, 'last_visit_date'), 'type');
+  return sortArrayOfObjects(
+    sortArrayOfObjects(filteredPatients, 'last_visit_date'),
+    'type'
+  );
 };
 
 const Home = () => {
