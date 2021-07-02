@@ -13,6 +13,7 @@
 
 # TODO:
 
+- Check errors on custom validators (test)
 - Remove unnecessary code (left comments, for example).
 - Tackle application and editor warnings.
 - Add functionality to "remember me" home page checkbox.
