@@ -1,4 +1,4 @@
-import { getUser } from './api';
+import { getUserData } from './api';
 import { STATUS_CODES } from '../utils/constants';
 import {
   getLocalStorage,
@@ -13,7 +13,7 @@ class Auth {
   }
 
   async login(payload) {
-    const result = await getUser(payload);
+    const result = await getUserData(payload);
 
     if (result.status === STATUS_CODES.SUCCESSFUL) {
       const token = result.data?.token || '';
@@ -34,9 +34,9 @@ class Auth {
 
   isAuthenticated() {
     // This should call backend service to verificate token.
-    const isAuth = getLocalStorage(this.authKey) ? true : false;
+    const token = getLocalStorage(this.authKey);
 
-    return isAuth;
+    return token;
   }
 };
 

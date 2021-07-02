@@ -1,5 +1,6 @@
 import * as yup from 'yup';
 import { REGEX } from '../utils/constants';
+import { getDomain, getDomainName } from '../utils/helpers';
 
 export const form = {
   inputs: [
@@ -21,8 +22,25 @@ export const form = {
 export const formSchema = yup.object().shape({
   username: yup.string()
     .required()
-    // .matches(/(?<=@)(.*){0,5}(?=.)/, 'more than 5 characters')
-    .matches(REGEX.EMAIL, 'username must be an email address only'),
+    .matches(REGEX.EMAIL, 'username must be an email address only')
+    .test('domain-name-length', 'Domain name is too long', function (value) {
+      const domainName = getDomainName(value);
+
+      if (domainName.length > 128) {
+        return this.createError({ message: 'Domain name is too long' });
+      } else {
+        return value;
+      }
+    })
+    .test('domain-length', 'Domain is too long', function (value) {
+      const domain = getDomain(value);
+
+      if (domain.length > 6) {
+        return this.createError({ message: 'Domain is too long' });
+      } else {
+        return value;
+      }
+    }),
   password: yup.string()
     .required()
     .matches(REGEX.ALPHANUMERIC, 'password must be alphanumeric only')

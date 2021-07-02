@@ -3,7 +3,7 @@ import { Form, Input, Button, Checkbox } from 'antd';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { form, formSchema } from '../models';
 import auth from '../services/auth';
@@ -47,7 +47,6 @@ const Login = () => {
             <Form.Item
               key={key}
               label={input.label}
-              name={input.name}
             >
               {input.name === 'password' ?
                 <Input.Password size={input.size} {...register(input.name)} /> :
@@ -68,7 +67,7 @@ const Login = () => {
             type='primary'
             htmlType='submit'
             size='large'
-          // disabled={1 > 0}
+            // disabled={1 > 0}
           >
             Log in
           </Button>

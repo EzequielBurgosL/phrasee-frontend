@@ -1,1 +1,2 @@
 export const ADD_USER_DATA = 'ADD_USER_DATA';
+export const HYDRATE_USER_DATA = 'HYDRATE_USER_DATA';
